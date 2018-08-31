@@ -1,0 +1,16 @@
+server:
+  port: 8880
+spring:
+  application:
+    name: spring-wp-elasticsearch
+  data:
+    elasticsearch:
+      cluster-nodes: localhost:9302
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+logging:
+  level:
+    root: DEBUG

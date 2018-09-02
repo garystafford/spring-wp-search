@@ -25,6 +25,7 @@ repositories {
 
 
 dependencies {
+    compile group: 'org.jsoup', name: 'jsoup', version: '1.11.3'
     compile('org.springframework.boot:spring-boot-starter-actuator')
     compile('org.springframework.boot:spring-boot-starter-data-elasticsearch')
     compile('org.springframework.boot:spring-boot-starter-data-rest')

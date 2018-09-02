@@ -2,7 +2,6 @@ package com.example.elasticsearch.controller;
 
 import com.example.elasticsearch.model.ElasticsearchPost;
 import com.example.elasticsearch.repository.ElasticsearchPostRepository;
-import org.elasticsearch.search.aggregations.Aggregation;
 import org.springframework.data.elasticsearch.core.aggregation.impl.AggregatedPageImpl;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,17 +25,21 @@ public class ElasticsearchPostController {
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public Iterable<ElasticsearchPost> findAll() {
+    public Map<String, List<ElasticsearchPost>> findAll() {
 
         Iterable<ElasticsearchPost> elasticsearchPosts = elasticsearchPostRepository.findAll();
         final List content = ((AggregatedPageImpl) elasticsearchPosts).getContent();
-        return content;
+        Map<String, List<ElasticsearchPost>> elasticsearchPostMap = new HashMap<>();
+        elasticsearchPostMap.put("ElasticsearchPosts", content);
+
+        return elasticsearchPostMap;
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public Optional<ElasticsearchPost> findById(@PathVariable("id") long id) {
 
         Optional<ElasticsearchPost> elasticsearchPost = elasticsearchPostRepository.findById(id);
+
         return elasticsearchPost;
     }
 

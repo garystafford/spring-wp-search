@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/wordpress")
@@ -26,7 +28,7 @@ public class WordpressPostController {
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public List<WordpressPost> findAll() {
+    public Map<String, List<WordpressPost>> findAll() {
 
         RestTemplate restTemplate = new RestTemplate();
         String url = String.format("%s&page=%d&per_page=%d", env.getProperty("wordpress.url"), 1, 25);
@@ -35,7 +37,11 @@ public class WordpressPostController {
                         new ParameterizedTypeReference<List<WordpressPost>>() {
                         });
         List<WordpressPost> wordpressPosts = wordpressResponse.getBody();
-        return wordpressPosts;
+
+        Map<String, List<WordpressPost>> wordpressPostMap = new HashMap<>();
+        wordpressPostMap.put("WordpressPosts", wordpressPosts);
+
+        return wordpressPostMap;
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
@@ -48,6 +54,7 @@ public class WordpressPostController {
                         new ParameterizedTypeReference<WordpressPost>() {
                         });
         WordpressPost wordpressPost = wordpressResponse.getBody();
+
         return wordpressPost;
     }
 

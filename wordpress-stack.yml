@@ -3,22 +3,27 @@ version: '3.3'
 services:
   wordpress:
     image: wordpress:latest
-    restart: always
+    deploy:
+      restart_policy:
+        condition: on-failure
     networks:
     - cms-net
     ports:
     - "8681:80/tcp"
+    - "21:21/tcp"
     environment:
       WORDPRESS_DB_PASSWORD: example
+    volumes:
+    - /Users/Shared/data/wp:/var/www/html
   mysql:
     image: mysql:latest
-    links:
-    - wordpress
     networks:
     - cms-net
-    restart: always
-    # volumes:
-    # - cms-vol:/var/lib/mysql
+    deploy:
+      restart_policy:
+        condition: on-failure
+    volumes:
+    - /Users/Shared/data/ms:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: example
       # MYSQL_ROOT_HOST: mysql
@@ -34,21 +39,23 @@ services:
     - "5046:5044"
     networks:
     - cms-net
-    restart: always
+    deploy:
+      restart_policy:
+        condition: on-failure
     volumes:
-    - cms-vol:/var/lib/elasticsearch
-  solr:
-    image: solr
-    ports:
-     - "8983:8983"
-    volumes:
-      - cms-vol:/opt/solr/server/solr/mycores
-    entrypoint:
-      - docker-entrypoint.sh
-      - solr-precreate
-      - mycore
-    networks:
-    - cms-net
+    - /Users/Shared/data/es:/var/lib/elasticsearch
+#  solr:
+#    image: solr
+#    ports:
+#     - "8983:8983"
+#    volumes:
+#      - data:/opt/solr/server/solr/mycores
+#    entrypoint:
+#      - docker-entrypoint.sh
+#      - solr-precreate
+#      - mycore
+#    networks:
+#    - cms-net
   adminer:
     image: adminer:latest
     # expose:
@@ -57,10 +64,12 @@ services:
     - "8481:8080/tcp"
     networks:
     - cms-net
-    restart: always
+    deploy:
+      restart_policy:
+        condition: on-failure
 
-volumes:
-  cms-vol:
+#volumes:
+#  cms-vol:
 
 networks:
   cms-net:

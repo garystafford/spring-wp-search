@@ -1,6 +1,6 @@
 package com.example.elasticsearch.controller;
 
-import com.example.elasticsearch.model.PostSearchResult;
+import com.example.elasticsearch.model.PostElasticSearch;
 import com.example.elasticsearch.repository.PostSearchResultRepository;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -18,7 +18,7 @@ public class PostSearchResultController {
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public Iterable<PostSearchResult> findAll() {
+    public Iterable<PostElasticSearch> findAll() {
 
         return postSearchResultRepository.findAll();
     }

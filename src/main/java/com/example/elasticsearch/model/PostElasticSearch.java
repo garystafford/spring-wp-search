@@ -9,7 +9,7 @@ import java.io.Serializable;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Document(indexName = "localhost8681-1", type = "post")
-public class PostSearchResult implements Serializable {
+public class PostElasticSearch implements Serializable {
 
     @Id
     private String _id;
@@ -23,25 +23,25 @@ public class PostSearchResult implements Serializable {
     @JsonProperty("post_excerpt")
     private String postExcerpt;
 
-    public PostSearchResult set_id(String _id) {
+    public PostElasticSearch set_id(String _id) {
 
         this._id = _id;
         return this;
     }
 
-    public PostSearchResult setPostTitle(String postTitle) {
+    public PostElasticSearch setPostTitle(String postTitle) {
 
         this.postTitle = postTitle;
         return this;
     }
 
-    public PostSearchResult setPostDate(String postDate) {
+    public PostElasticSearch setPostDate(String postDate) {
 
         this.postDate = postDate;
         return this;
     }
 
-    public PostSearchResult setPostExcerpt(String postExcerpt) {
+    public PostElasticSearch setPostExcerpt(String postExcerpt) {
 
         this.postExcerpt = postExcerpt;
         return this;

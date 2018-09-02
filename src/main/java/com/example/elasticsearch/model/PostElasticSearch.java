@@ -12,7 +12,8 @@ import java.io.Serializable;
 public class PostElasticSearch implements Serializable {
 
     @Id
-    private String _id;
+    @JsonProperty("ID")
+    private long id;
 
     @JsonProperty("post_title")
     private String postTitle;
@@ -23,9 +24,9 @@ public class PostElasticSearch implements Serializable {
     @JsonProperty("post_excerpt")
     private String postExcerpt;
 
-    public PostElasticSearch set_id(String _id) {
+    public PostElasticSearch setId(long id) {
 
-        this._id = _id;
+        this.id = id;
         return this;
     }
 

@@ -3,5 +3,6 @@ package com.example.elasticsearch.repository;
 import com.example.elasticsearch.model.PostElasticSearch;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 
-public interface PostSearchResultRepository extends ElasticsearchRepository<PostElasticSearch, String> {
+public interface PostSearchResultRepository extends ElasticsearchRepository<PostElasticSearch, Long> {
+
 }

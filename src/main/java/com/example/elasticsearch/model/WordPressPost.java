@@ -15,7 +15,6 @@ import java.io.Serializable;
 @ToString
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonDeserialize(using = WordPressPostDeserializer.class)
-//@JsonTypeInfo(include = JsonTypeInfo.As.WRAPPER_OBJECT, use = JsonTypeInfo.Id.CLASS)
 public class WordPressPost implements Serializable {
 
     @Id
@@ -27,7 +26,6 @@ public class WordPressPost implements Serializable {
     private String guid;
 
     private String title;
-
 
     private String excerpt;
 }

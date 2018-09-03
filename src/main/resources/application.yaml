@@ -7,6 +7,8 @@ spring:
     elasticsearch:
       cluster-nodes: localhost:9302
       cluster-name: elasticsearch
+    rest:
+      base-path: /blog/api/v1
 management:
   endpoints:
     web:

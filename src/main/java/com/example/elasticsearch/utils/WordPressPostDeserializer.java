@@ -37,5 +37,4 @@ public class WordPressPostDeserializer extends StdDeserializer<WordPressPost> {
         wordpressPost.setExcerpt(excerpt);
         return wordpressPost;
     }
-
 }

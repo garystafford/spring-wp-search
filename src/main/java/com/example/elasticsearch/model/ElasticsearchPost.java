@@ -7,7 +7,6 @@ import org.springframework.data.elasticsearch.annotations.Document;
 
 import java.io.Serializable;
 
-//@JsonTypeInfo(include = JsonTypeInfo.As.WRAPPER_OBJECT, use = JsonTypeInfo.Id.CLASS)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Document(indexName = "localhost8681-1", type = "post")
 public class ElasticsearchPost implements Serializable {
@@ -15,6 +14,9 @@ public class ElasticsearchPost implements Serializable {
     @Id
     @JsonProperty("ID")
     private long id;
+
+    @JsonProperty("_score")
+    private long score;
 
     @JsonProperty("post_title")
     private String postTitle;
@@ -28,6 +30,12 @@ public class ElasticsearchPost implements Serializable {
     public ElasticsearchPost setId(long id) {
 
         this.id = id;
+        return this;
+    }
+
+    public ElasticsearchPost setScore(long score) {
+
+        this.score = score;
         return this;
     }
 

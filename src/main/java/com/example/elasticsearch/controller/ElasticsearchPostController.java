@@ -4,10 +4,7 @@ import com.example.elasticsearch.model.ElasticsearchPost;
 import com.example.elasticsearch.repository.ElasticsearchPostRepository;
 import com.example.elasticsearch.service.ElasticsearchService;
 import org.springframework.data.elasticsearch.core.aggregation.impl.AggregatedPageImpl;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -15,13 +12,14 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/search")
+@RequestMapping("/elastic")
 public class ElasticsearchPostController {
 
     private ElasticsearchPostRepository elasticsearchPostRepository;
     private ElasticsearchService elasticsearchService;
 
-    public ElasticsearchPostController(ElasticsearchPostRepository elasticsearchPostRepository, ElasticsearchService elasticsearchService) {
+    public ElasticsearchPostController(ElasticsearchPostRepository elasticsearchPostRepository,
+                                       ElasticsearchService elasticsearchService) {
 
         this.elasticsearchPostRepository = elasticsearchPostRepository;
         this.elasticsearchService = elasticsearchService;
@@ -38,7 +36,7 @@ public class ElasticsearchPostController {
         return elasticsearchPostMap;
     }
 
-    @RequestMapping(value = "/id/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public Optional<ElasticsearchPost> findById(@PathVariable("id") long id) {
 
         Optional<ElasticsearchPost> elasticsearchPost = elasticsearchPostRepository.findById(id);
@@ -46,12 +44,26 @@ public class ElasticsearchPostController {
         return elasticsearchPost;
     }
 
-    @RequestMapping(value = "/special", method = RequestMethod.GET)
-    public List<ElasticsearchPost> specialSearch() {
+    @RequestMapping(value = "/simple-search", method = RequestMethod.GET)
+    public Map<String, List<ElasticsearchPost>> fieldContains(@RequestParam("field") String field,
+                                                              @RequestParam("value") String value) {
 
-        List<ElasticsearchPost> elasticsearchPosts = elasticsearchService.customQuery();
-        return elasticsearchPosts;
+        List<ElasticsearchPost> elasticsearchPosts = elasticsearchService.fieldContains(field, value);
+        Map<String, List<ElasticsearchPost>> elasticsearchPostMap = new HashMap<>();
+        elasticsearchPostMap.put("ElasticsearchPosts", elasticsearchPosts);
 
+        return elasticsearchPostMap;
     }
+
+    @RequestMapping(value = "/dismax-search", method = RequestMethod.GET)
+    public Map<String, List<ElasticsearchPost>> dismaxSearch(@RequestParam("value") String value) {
+
+        List<ElasticsearchPost> elasticsearchPosts = elasticsearchService.dismaxSearch(value);
+        Map<String, List<ElasticsearchPost>> elasticsearchPostMap = new HashMap<>();
+        elasticsearchPostMap.put("ElasticsearchPosts", elasticsearchPosts);
+
+        return elasticsearchPostMap;
+    }
+
 
 }

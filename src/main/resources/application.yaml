@@ -16,6 +16,7 @@ logging:
     root: DEBUG
 wordpress:
   url: http://localhost:8681/?rest_route=/wp/v2/posts
+  per-page: 25
 ---
 spring:
   profiles: docker

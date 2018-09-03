@@ -34,7 +34,9 @@ public class WordPressPostController {
     public Map<String, List<WordPressPost>> findAll() {
 
         restTemplate = new RestTemplate();
-        String url = String.format("%s&page=%d&per_page=%d", env.getProperty("wordpress.url"), 1, 25);
+        String url = String.format("%s&per_page=%s",
+                env.getProperty("wordpress.url"),
+                env.getProperty("wordpress.per-page"));
         ResponseEntity<List<WordPressPost>> wordPressResponse =
                 restTemplate.exchange(url, HttpMethod.GET, null,
                         new ParameterizedTypeReference<List<WordPressPost>>() {
@@ -60,5 +62,4 @@ public class WordPressPostController {
 
         return wordpressPost;
     }
-
 }

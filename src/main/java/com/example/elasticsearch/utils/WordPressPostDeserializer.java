@@ -33,7 +33,8 @@ public class WordPressPostDeserializer extends StdDeserializer<WordPressPost> {
         wordpressPost.setTitle(PostWordpressNode.get("title").get("rendered").textValue());
         String excerpt = PostWordpressNode.get("excerpt").get("rendered").textValue();
         excerpt = Jsoup.clean(excerpt, Whitelist.none())
-                .replaceAll("&nbsp;", " ").trim();
+                .replaceAll("&nbsp;", " ")
+                .replaceAll("#", "").trim();
         wordpressPost.setExcerpt(excerpt);
         return wordpressPost;
     }

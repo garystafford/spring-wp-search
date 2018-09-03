@@ -16,3 +16,14 @@ logging:
     root: DEBUG
 wordpress:
   url: http://localhost:8681/?rest_route=/wp/v2/posts
+---
+spring:
+  profiles: docker
+  data:
+    elasticsearch:
+      cluster-nodes: elastic:9302
+logging:
+  level:
+    root: INFO
+wordpress:
+  url: http://wordpress:8681/?rest_route=/wp/v2/posts

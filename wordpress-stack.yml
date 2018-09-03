@@ -26,12 +26,8 @@ services:
     - /Users/Shared/data/ms:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: example
-      # MYSQL_ROOT_HOST: mysql
-    # command: --default-authentication-plugin=mysql_native_password
   elastic:
     image: sebp/elk:latest
-    # expose:
-    # - "5702"
     ports:
     - "5702:5601/tcp"
     - "9202:9200"
@@ -44,22 +40,8 @@ services:
         condition: on-failure
     volumes:
     - /Users/Shared/data/es:/var/lib/elasticsearch
-#  solr:
-#    image: solr
-#    ports:
-#     - "8983:8983"
-#    volumes:
-#      - data:/opt/solr/server/solr/mycores
-#    entrypoint:
-#      - docker-entrypoint.sh
-#      - solr-precreate
-#      - mycore
-#    networks:
-#    - cms-net
   adminer:
     image: adminer:latest
-    # expose:
-    # - "8481"
     ports:
     - "8481:8080/tcp"
     networks:
@@ -67,9 +49,6 @@ services:
     deploy:
       restart_policy:
         condition: on-failure
-
-#volumes:
-#  cms-vol:
 
 networks:
   cms-net:

@@ -1,6 +1,6 @@
 package com.example.elasticsearch.utils;
 
-import com.example.elasticsearch.model.WordpressPost;
+import com.example.elasticsearch.model.WordPressPost;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -10,23 +10,23 @@ import org.jsoup.safety.Whitelist;
 
 import java.io.IOException;
 
-public class WordpressPostDeserializer extends StdDeserializer<WordpressPost> {
+public class WordPressPostDeserializer extends StdDeserializer<WordPressPost> {
 
-    public WordpressPostDeserializer() {
+    public WordPressPostDeserializer() {
 
         this(null);
     }
 
-    public WordpressPostDeserializer(Class<?> vc) {
+    public WordPressPostDeserializer(Class<?> vc) {
 
         super(vc);
     }
 
-    public WordpressPost deserialize(JsonParser jp, DeserializationContext ctxt)
+    public WordPressPost deserialize(JsonParser jp, DeserializationContext ctxt)
             throws IOException {
 
         JsonNode PostWordpressNode = jp.getCodec().readTree(jp);
-        WordpressPost wordpressPost = new WordpressPost();
+        WordPressPost wordpressPost = new WordPressPost();
         wordpressPost.setId(PostWordpressNode.get("id").longValue());
         wordpressPost.setDateGMT(PostWordpressNode.get("date_gmt").textValue());
         wordpressPost.setGuid(PostWordpressNode.get("guid").get("rendered").textValue());

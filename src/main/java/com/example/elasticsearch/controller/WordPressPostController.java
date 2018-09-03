@@ -1,6 +1,6 @@
 package com.example.elasticsearch.controller;
 
-import com.example.elasticsearch.model.WordpressPost;
+import com.example.elasticsearch.model.WordPressPost;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.env.Environment;
@@ -18,42 +18,45 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/wordpress")
-public class WordpressPostController {
+public class WordPressPostController {
 
     private Environment env;
+    private RestTemplate restTemplate;
 
     @Autowired
-    public WordpressPostController(Environment env) {
+    public WordPressPostController(Environment env, RestTemplate restTemplate) {
+
         this.env = env;
+        this.restTemplate = restTemplate;
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public Map<String, List<WordpressPost>> findAll() {
+    public Map<String, List<WordPressPost>> findAll() {
 
-        RestTemplate restTemplate = new RestTemplate();
+        restTemplate = new RestTemplate();
         String url = String.format("%s&page=%d&per_page=%d", env.getProperty("wordpress.url"), 1, 25);
-        ResponseEntity<List<WordpressPost>> wordpressResponse =
+        ResponseEntity<List<WordPressPost>> wordPressResponse =
                 restTemplate.exchange(url, HttpMethod.GET, null,
-                        new ParameterizedTypeReference<List<WordpressPost>>() {
+                        new ParameterizedTypeReference<List<WordPressPost>>() {
                         });
-        List<WordpressPost> wordpressPosts = wordpressResponse.getBody();
+        List<WordPressPost> wordPressPosts = wordPressResponse.getBody();
 
-        Map<String, List<WordpressPost>> wordpressPostMap = new HashMap<>();
-        wordpressPostMap.put("WordpressPosts", wordpressPosts);
+        Map<String, List<WordPressPost>> wordPressPostMap = new HashMap<>();
+        wordPressPostMap.put("WordPressPosts", wordPressPosts);
 
-        return wordpressPostMap;
+        return wordPressPostMap;
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public WordpressPost findById(@PathVariable("id") long id) {
+    public WordPressPost findById(@PathVariable("id") long id) {
 
-        RestTemplate restTemplate = new RestTemplate();
+        restTemplate = new RestTemplate();
         String url = String.format("%s/%d", env.getProperty("wordpress.url"), id);
-        ResponseEntity<WordpressPost> wordpressResponse =
+        ResponseEntity<WordPressPost> wordpressResponse =
                 restTemplate.exchange(url, HttpMethod.GET, null,
-                        new ParameterizedTypeReference<WordpressPost>() {
+                        new ParameterizedTypeReference<WordPressPost>() {
                         });
-        WordpressPost wordpressPost = wordpressResponse.getBody();
+        WordPressPost wordpressPost = wordpressResponse.getBody();
 
         return wordpressPost;
     }

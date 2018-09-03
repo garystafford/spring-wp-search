@@ -3,7 +3,7 @@ buildscript {
         springBootVersion = '2.0.4.RELEASE'
     }
     repositories {
-        mavenCentral()
+        jcenter()
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
@@ -15,22 +15,21 @@ apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 
-group = 'com.example'
+group = 'com.example.elasticsearch'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = 1.8
 
 repositories {
-    mavenCentral()
+    jcenter()
 }
 
-
 dependencies {
+    compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
+    compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
     compile group: 'org.jsoup', name: 'jsoup', version: '1.11.3'
-    compile('org.springframework.boot:spring-boot-starter-actuator')
-    compile('org.springframework.boot:spring-boot-starter-data-elasticsearch')
-    compile('org.springframework.boot:spring-boot-starter-data-rest')
-    compile('org.springframework.boot:spring-boot-starter-hateoas')
-    compile('org.springframework.data:spring-data-rest-hal-browser')
-    compileOnly('org.projectlombok:lombok')
-    testCompile('org.springframework.boot:spring-boot-starter-test')
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-elasticsearch'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-web'
+    compileOnly group: 'org.projectlombok', name: 'lombok'
+    testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
 }

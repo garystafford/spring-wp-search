@@ -1,10 +1,9 @@
 package com.example.elasticsearch.model;
 
 
-import com.example.elasticsearch.utils.WordpressPostDeserializer;
+import com.example.elasticsearch.utils.WordPressPostDeserializer;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Data;
 import lombok.ToString;
@@ -15,9 +14,9 @@ import java.io.Serializable;
 @Data
 @ToString
 @JsonIgnoreProperties(ignoreUnknown = true)
-@JsonDeserialize(using = WordpressPostDeserializer.class)
+@JsonDeserialize(using = WordPressPostDeserializer.class)
 //@JsonTypeInfo(include = JsonTypeInfo.As.WRAPPER_OBJECT, use = JsonTypeInfo.Id.CLASS)
-public class WordpressPost implements Serializable {
+public class WordPressPost implements Serializable {
 
     @Id
     private long id;

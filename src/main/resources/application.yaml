@@ -6,6 +6,7 @@ spring:
   data:
     elasticsearch:
       cluster-nodes: localhost:9302
+      cluster-name: elasticsearch
 management:
   endpoints:
     web:
@@ -22,9 +23,9 @@ spring:
   profiles: docker
   data:
     elasticsearch:
-      cluster-nodes: elastic:9302
+      cluster-nodes: elastic:9300
 logging:
   level:
     root: INFO
 wordpress:
-  url: http://wordpress:8681/?rest_route=/wp/v2/posts
+  url: http://wordpress/?rest_route=/wp/v2/posts

@@ -20,13 +20,13 @@ import java.util.Map;
 @RequestMapping("/wordpress")
 public class WordPressPostController {
 
-    private Environment env;
+    private Environment environment;
     private RestTemplate restTemplate;
 
     @Autowired
-    public WordPressPostController(Environment env, RestTemplate restTemplate) {
+    public WordPressPostController(Environment environment, RestTemplate restTemplate) {
 
-        this.env = env;
+        this.environment = environment;
         this.restTemplate = restTemplate;
     }
 
@@ -35,8 +35,8 @@ public class WordPressPostController {
 
         restTemplate = new RestTemplate();
         String url = String.format("%s&per_page=%s",
-                env.getProperty("wordpress.url"),
-                env.getProperty("wordpress.per-page"));
+                environment.getProperty("wordpress.url"),
+                environment.getProperty("wordpress.per-page"));
         ResponseEntity<List<WordPressPost>> wordPressResponse =
                 restTemplate.exchange(url, HttpMethod.GET, null,
                         new ParameterizedTypeReference<List<WordPressPost>>() {
@@ -53,7 +53,9 @@ public class WordPressPostController {
     public WordPressPost findById(@PathVariable("id") long id) {
 
         restTemplate = new RestTemplate();
-        String url = String.format("%s/%d", env.getProperty("wordpress.url"), id);
+        String url = String.format("%s/%d",
+                environment.getProperty("wordpress.url"),
+                id);
         ResponseEntity<WordPressPost> wordpressResponse =
                 restTemplate.exchange(url, HttpMethod.GET, null,
                         new ParameterizedTypeReference<WordPressPost>() {

@@ -10,7 +10,6 @@ services:
     - cms-net
     ports:
     - "8681:80/tcp"
-    - "21:21/tcp"
     environment:
       WORDPRESS_DB_PASSWORD: example
     volumes:

@@ -36,6 +36,7 @@ public class WordPressPostDeserializer extends StdDeserializer<WordPressPost> {
                 .replaceAll("&nbsp;", " ")
                 .replaceAll("#", "").trim();
         wordpressPost.setExcerpt(excerpt);
+
         return wordpressPost;
     }
 }

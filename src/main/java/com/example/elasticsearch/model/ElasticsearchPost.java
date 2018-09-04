@@ -16,7 +16,7 @@ public class ElasticsearchPost implements Serializable {
     private long id;
 
     @JsonProperty("_score")
-    private long score;
+    private float score;
 
     @JsonProperty("post_title")
     private String postTitle;
@@ -33,7 +33,7 @@ public class ElasticsearchPost implements Serializable {
         return this;
     }
 
-    public ElasticsearchPost setScore(long score) {
+    public ElasticsearchPost setScore(float score) {
 
         this.score = score;
         return this;

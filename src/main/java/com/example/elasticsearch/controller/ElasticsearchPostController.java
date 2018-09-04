@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ExecutionException;
 
 @RestController
 @RequestMapping("/elastic")
@@ -63,6 +64,14 @@ public class ElasticsearchPostController {
         elasticsearchPostMap.put("ElasticsearchPosts", elasticsearchPosts);
 
         return elasticsearchPostMap;
+    }
+
+    @RequestMapping(value = "/dismax-search/hits", method = RequestMethod.GET)
+    public long dismaxSearchHits(@RequestParam("value") String value) throws ExecutionException, InterruptedException {
+
+        long hits = elasticsearchService.dismaxSearchHits(value);
+
+        return hits;
     }
 
 

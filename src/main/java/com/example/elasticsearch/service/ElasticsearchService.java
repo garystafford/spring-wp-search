@@ -17,8 +17,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import static org.elasticsearch.index.query.QueryBuilders.fuzzyQuery;
+import static org.elasticsearch.index.query.QueryBuilders.matchPhraseQuery;
 
 @Component
 public class ElasticsearchService {
@@ -46,13 +48,7 @@ public class ElasticsearchService {
 
     public List<ElasticsearchPost> dismaxSearch(String value) {
 
-        value = value.toLowerCase();
-
-        QueryBuilder queryBuilder = QueryBuilders.disMaxQuery()
-                .add(fuzzyQuery("post_title", value).boost(3))
-                .add(fuzzyQuery("terms.post_tag.name", value).boost(3))
-                .add(fuzzyQuery("post_excerpt", value).boost(2))
-                .add(fuzzyQuery("post_content", value).boost(1));
+        QueryBuilder queryBuilder = getQueryBuilder(value);
 
         Client client = elasticsearchTemplate.getClient();
         SearchResponse response = client.prepareSearch().setQuery(queryBuilder).execute().actionGet();
@@ -69,6 +65,26 @@ public class ElasticsearchService {
         });
 
         return elasticsearchPosts;
+    }
+
+    public long dismaxSearchHits(String value) throws ExecutionException, InterruptedException {
+
+        QueryBuilder queryBuilder = getQueryBuilder(value);
+        Client client = elasticsearchTemplate.getClient();
+        long hits = client.prepareSearch().setQuery(queryBuilder).execute().get().getHits().totalHits;
+
+        return hits;
+    }
+
+    private QueryBuilder getQueryBuilder(String value) {
+
+        value = value.toLowerCase();
+
+        return QueryBuilders.disMaxQuery()
+                .add(matchPhraseQuery("post_title", value).boost(3))
+                .add(matchPhraseQuery("terms.post_tag.name", value).boost(3))
+                .add(matchPhraseQuery("post_excerpt", value).boost(2))
+                .add(matchPhraseQuery("post_content", value).boost(1));
     }
 
 }

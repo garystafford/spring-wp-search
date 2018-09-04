@@ -1,12 +1,9 @@
 package com.example.elasticsearch.service;
 
 import com.example.elasticsearch.model.ElasticsearchPost;
-import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jdk.nashorn.internal.parser.JSONParser;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.Client;
-import org.elasticsearch.client.Requests;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
@@ -56,12 +53,6 @@ public class ElasticsearchService {
                 .add(fuzzyQuery("terms.post_tag.name", value).boost(3))
                 .add(fuzzyQuery("post_excerpt", value).boost(2))
                 .add(fuzzyQuery("post_content", value).boost(1));
-        SearchQuery searchQuery = new NativeSearchQueryBuilder()
-                .withQuery(queryBuilder)
-                .build();
-//        List<ElasticsearchPost> elasticsearchPosts =
-//                elasticsearchTemplate.queryForList(searchQuery, ElasticsearchPost.class);
-
 
         Client client = elasticsearchTemplate.getClient();
         SearchResponse response = client.prepareSearch().setQuery(queryBuilder).execute().actionGet();

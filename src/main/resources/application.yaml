@@ -1,5 +1,7 @@
 server:
   port: 8880
+  servlet:
+    context-path: /blog/api/v1
 spring:
   application:
     name: spring-wp-elasticsearch
@@ -7,8 +9,6 @@ spring:
     elasticsearch:
       cluster-nodes: localhost:9302
       cluster-name: elasticsearch
-    rest:
-      base-path: /blog/api/v1
 management:
   endpoints:
     web:

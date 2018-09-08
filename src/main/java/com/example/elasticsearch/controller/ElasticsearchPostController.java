@@ -13,7 +13,7 @@ import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
 @RestController
-@RequestMapping("/elastic")
+@RequestMapping(value = "/elastic", method = RequestMethod.GET, consumes = "application/json", produces = "application/json")
 public class ElasticsearchPostController {
 
     private ElasticsearchPostRepository elasticsearchPostRepository;
@@ -26,7 +26,7 @@ public class ElasticsearchPostController {
         this.elasticsearchService = elasticsearchService;
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @RequestMapping(value = "/")
     public Map<String, List<ElasticsearchPost>> findAll() {
 
         Iterable<ElasticsearchPost> elasticsearchPosts = elasticsearchPostRepository.findAll();
@@ -37,7 +37,7 @@ public class ElasticsearchPostController {
         return elasticsearchPostMap;
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}")
     public Optional<ElasticsearchPost> findById(@PathVariable("id") long id) {
 
         Optional<ElasticsearchPost> elasticsearchPost = elasticsearchPostRepository.findById(id);
@@ -45,7 +45,7 @@ public class ElasticsearchPostController {
         return elasticsearchPost;
     }
 
-    @RequestMapping(value = "/simple-search", method = RequestMethod.GET)
+    @RequestMapping(value = "/simple-search")
     public Map<String, List<ElasticsearchPost>> fieldContains(@RequestParam("field") String field,
                                                               @RequestParam("value") String value) {
 
@@ -56,7 +56,7 @@ public class ElasticsearchPostController {
         return elasticsearchPostMap;
     }
 
-    @RequestMapping(value = "/dismax-search", method = RequestMethod.GET)
+    @RequestMapping(value = "/dismax-search")
     public Map<String, List<ElasticsearchPost>> dismaxSearch(@RequestParam("value") String value) {
 
         List<ElasticsearchPost> elasticsearchPosts = elasticsearchService.dismaxSearch(value);
@@ -66,7 +66,7 @@ public class ElasticsearchPostController {
         return elasticsearchPostMap;
     }
 
-    @RequestMapping(value = "/dismax-search/hits", method = RequestMethod.GET)
+    @RequestMapping(value = "/dismax-search/hits")
     public long dismaxSearchHits(@RequestParam("value") String value) throws ExecutionException, InterruptedException {
 
         long hits = elasticsearchService.dismaxSearchHits(value);

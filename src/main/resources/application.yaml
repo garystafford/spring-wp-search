@@ -22,12 +22,13 @@ wordpress:
   per-page: 25
 ---
 spring:
-  profiles: docker
+  profiles: gcp
   data:
     elasticsearch:
-      cluster-nodes: elastic:9300
+      cluster-nodes: 35.239.10.190:9300
+      cluster-name: elasticsearch
 logging:
   level:
     root: INFO
 wordpress:
-  url: http://wordpress/?rest_route=/wp/v2/posts
+  url: http://localhost:8681/?rest_route=/wp/v2/posts

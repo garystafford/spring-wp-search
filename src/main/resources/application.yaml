@@ -21,6 +21,8 @@ wordpress:
   url: http://localhost:8681/?rest_route=/wp/v2/posts
   per-page: 25
 ---
+server:
+  port: 8080
 spring:
   profiles: gcp
   data:
@@ -31,4 +33,4 @@ logging:
   level:
     root: INFO
 wordpress:
-  url: http://localhost:8681/?rest_route=/wp/v2/posts
+  url: https://programmaticponderings.com/?rest_route=/wp/v2/posts

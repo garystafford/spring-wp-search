@@ -1,0 +1,17 @@
+---
+apiVersion: "v1"
+kind: "Service"
+metadata:
+  name: "wp-es-demo-service"
+  namespace: "dev"
+  labels:
+    app: "wp-es-demo"
+spec:
+  ports:
+  - protocol: "TCP"
+    port: 80
+    targetPort: 8080
+  selector:
+    app: "wp-es-demo"
+  type: "LoadBalancer"
+  loadBalancerIP: ""

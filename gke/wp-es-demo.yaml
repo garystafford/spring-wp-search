@@ -1,0 +1,42 @@
+---
+apiVersion: "v1"
+kind: "Namespace"
+metadata:
+  name: "dev"
+---
+apiVersion: "extensions/v1beta1"
+kind: "Deployment"
+metadata:
+  name: "wp-es-demo"
+  namespace: "dev"
+  labels:
+    app: "wp-es-demo"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: "wp-es-demo"
+  template:
+    metadata:
+      labels:
+        app: "wp-es-demo"
+    spec:
+      containers:
+      - name: "wp-es-demo"
+        image: "garystafford/wp-es-demo:latest"
+---
+apiVersion: "autoscaling/v1"
+kind: "HorizontalPodAutoscaler"
+metadata:
+  name: "wp-es-demo-hpa"
+  namespace: "dev"
+  labels:
+    app: "wp-es-demo"
+spec:
+  scaleTargetRef:
+    kind: "Deployment"
+    name: "wp-es-demo"
+    apiVersion: "apps/v1beta1"
+  minReplicas: 1
+  maxReplicas: 3
+  targetCPUUtilizationPercentage: 80

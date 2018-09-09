@@ -4,6 +4,7 @@ import com.example.elasticsearch.model.ElasticsearchPost;
 import com.example.elasticsearch.repository.ElasticsearchPostRepository;
 import com.example.elasticsearch.service.ElasticsearchService;
 import org.springframework.data.elasticsearch.core.aggregation.impl.AggregatedPageImpl;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -13,7 +14,7 @@ import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
 @RestController
-@RequestMapping(value = "/elastic", method = RequestMethod.GET, consumes = "application/json", produces = "application/json")
+@RequestMapping(value = "/elastic", method = RequestMethod.GET)
 public class ElasticsearchPostController {
 
     private ElasticsearchPostRepository elasticsearchPostRepository;

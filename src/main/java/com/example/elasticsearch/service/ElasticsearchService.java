@@ -8,6 +8,8 @@ import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.data.elasticsearch.core.query.SearchQuery;
@@ -46,12 +48,12 @@ public class ElasticsearchService {
         return elasticsearchPosts;
     }
 
-    public List<ElasticsearchPost> dismaxSearch(String value) {
+    public List<ElasticsearchPost> dismaxSearch(String value, int size) {
 
         QueryBuilder queryBuilder = getQueryBuilder(value);
 
         Client client = elasticsearchTemplate.getClient();
-        SearchResponse response = client.prepareSearch().setQuery(queryBuilder).execute().actionGet();
+        SearchResponse response = client.prepareSearch().setQuery(queryBuilder).setSize(size).execute().actionGet();
         List<SearchHit> searchHits = Arrays.asList(response.getHits().getHits());
         ObjectMapper mapper = new ObjectMapper();
         List<ElasticsearchPost> elasticsearchPosts = new ArrayList<>();

@@ -19,13 +19,16 @@ public class ElasticsearchPost implements Serializable {
     private float score;
 
     @JsonProperty("post_title")
-    private String postTitle;
+    private String title;
 
     @JsonProperty("post_date")
-    private String postDate;
+    private String publishDate;
 
     @JsonProperty("post_excerpt")
-    private String postExcerpt;
+    private String excerpt;
+
+    @JsonProperty("guid")
+    private String url;
 
     public ElasticsearchPost setId(long id) {
 
@@ -39,21 +42,27 @@ public class ElasticsearchPost implements Serializable {
         return this;
     }
 
-    public ElasticsearchPost setPostTitle(String postTitle) {
+    public ElasticsearchPost setTitle(String title) {
 
-        this.postTitle = postTitle;
+        this.title = title;
         return this;
     }
 
-    public ElasticsearchPost setPostDate(String postDate) {
+    public ElasticsearchPost setPublishDate(String publishDate) {
 
-        this.postDate = postDate;
+        this.publishDate = publishDate;
         return this;
     }
 
-    public ElasticsearchPost setPostExcerpt(String postExcerpt) {
+    public ElasticsearchPost setExcerpt(String excerpt) {
 
-        this.postExcerpt = postExcerpt;
+        this.excerpt = excerpt;
+        return this;
+    }
+
+    public ElasticsearchPost setUrl(String url) {
+
+        this.url = url;
         return this;
     }
 }

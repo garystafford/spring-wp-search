@@ -1,8 +1,14 @@
 ---
 apiVersion: "v1"
-kind: "Namespace"
+kind: "ConfigMap"
 metadata:
-  name: "dev"
+  name: "wp-es-demo-config"
+  namespace: "dev"
+  labels:
+    app: "wp-es-demo"
+data:
+  cluster_nodes: "search.chatbotzlabs.com:9300"
+  cluser_name: "elasticsearch"
 ---
 apiVersion: "extensions/v1beta1"
 kind: "Deployment"
@@ -24,6 +30,17 @@ spec:
       containers:
       - name: "wp-es-demo"
         image: "garystafford/wp-es-demo:latest"
+        env:
+        - name: "SPRING_DATA_ELASTICSEARCH_CLUSTER-NODES"
+          valueFrom:
+            configMapKeyRef:
+              key: "cluster_nodes"
+              name: "wp-es-demo-config"
+        - name: "SPRING_DATA_ELASTICSEARCH_CLUSTER-NAME"
+          valueFrom:
+            configMapKeyRef:
+              key: "cluser_name"
+              name: "wp-es-demo-config"
 ---
 apiVersion: "autoscaling/v1"
 kind: "HorizontalPodAutoscaler"
@@ -38,5 +55,5 @@ spec:
     name: "wp-es-demo"
     apiVersion: "apps/v1beta1"
   minReplicas: 1
-  maxReplicas: 3
+  maxReplicas: 2
   targetCPUUtilizationPercentage: 80

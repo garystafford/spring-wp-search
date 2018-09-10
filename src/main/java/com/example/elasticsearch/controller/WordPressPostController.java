@@ -1,6 +1,8 @@
 package com.example.elasticsearch.controller;
 
 import com.example.elasticsearch.model.WordPressPost;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.env.Environment;
@@ -18,6 +20,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/wordpress")
+@Api(value = "search", description = "Operations pertaining to searching for posts in WordPress")
 public class WordPressPostController {
 
     private Environment environment;
@@ -31,6 +34,7 @@ public class WordPressPostController {
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
+    @ApiOperation(value = "Returns all posts")
     public Map<String, List<WordPressPost>> findAll() {
 
         restTemplate = new RestTemplate();
@@ -50,6 +54,7 @@ public class WordPressPostController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @ApiOperation(value = "Returns a post by id")
     public WordPressPost findById(@PathVariable("id") long id) {
 
         restTemplate = new RestTemplate();

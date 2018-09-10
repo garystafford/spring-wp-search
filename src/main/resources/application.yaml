@@ -27,7 +27,7 @@ spring:
   profiles: gcp
   data:
     elasticsearch:
-      cluster-nodes: 35.239.10.190:9300
+      cluster-nodes: search.chatbotzlabs.com:9300
       cluster-name: elasticsearch
 logging:
   level:

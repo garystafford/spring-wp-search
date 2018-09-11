@@ -13,6 +13,7 @@ gcloud beta container --project "wp-search-bot" clusters create "wp-search-clust
 
 sh ./Docker/docker-build-push.sh
 kubectl apply -f gke/wp-es-demo.yaml
+kubectl replace --force -f gke/wp-es-demo.yaml
 kubectl apply -f gke/wp-es-demo-service.yaml
 
 gcloud dns --project=wp-search-bot managed-zones create chatbotzlabs --description=chatbotzlabs.com --dns-name=chatbotzlabs.com.
@@ -24,3 +25,7 @@ gcloud dns --project=wp-search-bot record-sets transaction execute --zone=chatbo
 gcloud dns --project=wp-search-bot record-sets transaction start --zone=chatbotzlabs
 gcloud dns --project=wp-search-bot record-sets transaction add 35.196.209.4 --name=api.chatbotzlabs.com. --ttl=300 --type=A --zone=chatbotzlabs
 gcloud dns --project=wp-search-bot record-sets transaction execute --zone=chatbotzlabs
+
+gcloud auth configure-docker
+docker tag garystafford/wp-es-demo:latest gcr.io/wp-search-bot/wp-es-demo:latest
+docker push gcr.io/wp-search-bot/wp-es-demo:latest

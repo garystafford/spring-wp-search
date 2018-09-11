@@ -29,7 +29,8 @@ spec:
     spec:
       containers:
       - name: "wp-es-demo"
-        image: "garystafford/wp-es-demo:latest"
+        image: "gcr.io/wp-search-bot/wp-es-demo"
+        imagePullPolicy: Always
         env:
         - name: "SPRING_DATA_ELASTICSEARCH_CLUSTER-NODES"
           valueFrom:

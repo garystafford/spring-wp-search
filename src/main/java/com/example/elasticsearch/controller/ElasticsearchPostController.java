@@ -73,15 +73,19 @@ public class ElasticsearchPostController {
      * Performs dismax search and returns List<ElasticsearchPost> containing the value
      *
      * @param value the string to search for
+     * @param start the starting index
      * @param size  the number of results to return
+     * @param minScore the minimum score to return
      * @return
      */
     @RequestMapping(value = "/dismax-search")
     @ApiOperation(value = "Performs dismax search and returns a list of posts containing the value input")
     public Map<String, List<ElasticsearchPost>> dismaxSearch(@RequestParam("value") String value,
-                                                             @RequestParam("size") int size) {
+                                                             @RequestParam("start") int start,
+                                                             @RequestParam("size") int size,
+                                                             @RequestParam("minScore") float minScore) {
 
-        List<ElasticsearchPost> elasticsearchPosts = elasticsearchService.dismaxSearch(value, size);
+        List<ElasticsearchPost> elasticsearchPosts = elasticsearchService.dismaxSearch(value, start, size, minScore);
         Map<String, List<ElasticsearchPost>> elasticsearchPostMap = new HashMap<>();
         elasticsearchPostMap.put("ElasticsearchPosts", elasticsearchPosts);
 
@@ -92,15 +96,17 @@ public class ElasticsearchPostController {
      * Performs dismax search and returns count of posts containing value
      *
      * @param value the string to search for
+     * @param minScore the minimum score to return
      * @return
      * @throws ExecutionException
      * @throws InterruptedException
      */
     @RequestMapping(value = "/dismax-search/hits")
     @ApiOperation(value = "Performs dismax search and returns count of posts containing the value input")
-    public long dismaxSearchHits(@RequestParam("value") String value) throws ExecutionException, InterruptedException {
+    public long dismaxSearchHits(@RequestParam("value") String value,
+                                 @RequestParam("minScore") float minScore) throws ExecutionException, InterruptedException {
 
-        long hits = elasticsearchService.dismaxSearchHits(value);
+        long hits = elasticsearchService.dismaxSearchHits(value, minScore);
 
         return hits;
     }

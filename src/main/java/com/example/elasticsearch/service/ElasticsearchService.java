@@ -48,12 +48,18 @@ public class ElasticsearchService {
         return elasticsearchPosts;
     }
 
-    public List<ElasticsearchPost> dismaxSearch(String value, int size) {
+    public List<ElasticsearchPost> dismaxSearch(String value, int start, int size, float minScore) {
 
         QueryBuilder queryBuilder = getQueryBuilder(value);
 
         Client client = elasticsearchTemplate.getClient();
-        SearchResponse response = client.prepareSearch().setQuery(queryBuilder).setSize(size).execute().actionGet();
+        SearchResponse response = client.prepareSearch()
+                .setQuery(queryBuilder)
+                .setSize(size)
+                .setFrom(start)
+                .setMinScore(minScore)
+                .execute()
+                .actionGet();
         List<SearchHit> searchHits = Arrays.asList(response.getHits().getHits());
         ObjectMapper mapper = new ObjectMapper();
         List<ElasticsearchPost> elasticsearchPosts = new ArrayList<>();
@@ -69,11 +75,16 @@ public class ElasticsearchService {
         return elasticsearchPosts;
     }
 
-    public long dismaxSearchHits(String value) throws ExecutionException, InterruptedException {
+    public long dismaxSearchHits(String value, float minScore) throws ExecutionException, InterruptedException {
 
         QueryBuilder queryBuilder = getQueryBuilder(value);
         Client client = elasticsearchTemplate.getClient();
-        long hits = client.prepareSearch().setQuery(queryBuilder).execute().get().getHits().totalHits;
+        long hits = client.prepareSearch().setQuery(queryBuilder)
+                .setMinScore(minScore)
+                .execute()
+                .get()
+                .getHits()
+                .totalHits;
 
         return hits;
     }

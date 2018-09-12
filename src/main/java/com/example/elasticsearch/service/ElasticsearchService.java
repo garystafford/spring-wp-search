@@ -8,8 +8,6 @@ import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.data.elasticsearch.core.query.SearchQuery;
@@ -58,6 +56,7 @@ public class ElasticsearchService {
                 .setSize(size)
                 .setFrom(start)
                 .setMinScore(minScore)
+                .setExplain(true)
                 .execute()
                 .actionGet();
         List<SearchHit> searchHits = Arrays.asList(response.getHits().getHits());

@@ -29,3 +29,4 @@ gcloud dns --project=wp-search-bot record-sets transaction execute --zone=chatbo
 gcloud auth configure-docker
 docker tag garystafford/wp-es-demo:latest gcr.io/wp-search-bot/wp-es-demo:latest
 docker push gcr.io/wp-search-bot/wp-es-demo:latest
+gcloud container images list

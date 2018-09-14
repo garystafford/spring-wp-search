@@ -43,11 +43,13 @@ public class ElasticsearchPostController {
 
     @RequestMapping(value = "/{id}")
     @ApiOperation(value = "Returns a post by id")
-    public Optional<ElasticsearchPost> findById(@PathVariable("id") long id) {
+    public Map<String, Optional<ElasticsearchPost>> findById(@PathVariable("id") long id) {
 
         Optional<ElasticsearchPost> elasticsearchPost = elasticsearchPostRepository.findById(id);
+        Map<String, Optional<ElasticsearchPost>> elasticsearchPostMap = new HashMap<>();
+        elasticsearchPostMap.put("ElasticsearchPosts", elasticsearchPost);
 
-        return elasticsearchPost;
+        return elasticsearchPostMap;
     }
 
     /**

@@ -7,6 +7,7 @@ import org.elasticsearch.client.Client;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
@@ -56,7 +57,7 @@ public class ElasticsearchService {
                 .setSize(size)
                 .setFrom(start)
                 .setMinScore(minScore)
-                .setExplain(true)
+                .addSort("_score", SortOrder.DESC)
                 .execute()
                 .actionGet();
         List<SearchHit> searchHits = Arrays.asList(response.getHits().getHits());

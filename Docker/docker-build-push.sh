@@ -11,7 +11,7 @@
 docker build -f Docker/Dockerfile --no-cache -t garystafford/wp-es-demo:latest .
 
 # Docker Hub
-#docker push garystafford/wp-es-demo:latest
+docker push garystafford/wp-es-demo:latest
 
 # GCP Container Registry
 docker tag garystafford/wp-es-demo:latest gcr.io/wp-search-bot/wp-es-demo:latest

@@ -34,6 +34,13 @@ public class ElasticsearchService {
         this.elasticsearchTemplate = elasticsearchTemplate;
     }
 
+    /**
+     * Performs search within the field input with value input
+     *
+     * @param field the field to search
+     * @param value the string to search for
+     * @return list of posts
+     */
     public List<ElasticsearchPost> fieldContains(String field, String value) {
 
         field = field.toLowerCase();
@@ -47,6 +54,15 @@ public class ElasticsearchService {
         return elasticsearchPosts;
     }
 
+    /**
+     * Performs dismax search and returns a list of posts containing the value
+     *
+     * @param value    the string to search for
+     * @param start    the starting index
+     * @param size     the number of results to return
+     * @param minScore the minimum score to return
+     * @return list of posts
+     */
     public List<ElasticsearchPost> dismaxSearch(String value, int start, int size, float minScore) {
 
         QueryBuilder queryBuilder = getQueryBuilder(value);
@@ -58,6 +74,7 @@ public class ElasticsearchService {
                 .setFrom(start)
                 .setMinScore(minScore)
                 .addSort("_score", SortOrder.DESC)
+                .setExplain(true)
                 .execute()
                 .actionGet();
         List<SearchHit> searchHits = Arrays.asList(response.getHits().getHits());
@@ -75,6 +92,15 @@ public class ElasticsearchService {
         return elasticsearchPosts;
     }
 
+    /**
+     * Performs dismax search and returns a count of posts containing the value
+     *
+     * @param value    the string to search for
+     * @param minScore the minimum score to return
+     * @return count of posts
+     * @throws ExecutionException
+     * @throws InterruptedException
+     */
     public long dismaxSearchHits(String value, float minScore) throws ExecutionException, InterruptedException {
 
         QueryBuilder queryBuilder = getQueryBuilder(value);
@@ -89,6 +115,12 @@ public class ElasticsearchService {
         return hits;
     }
 
+    /**
+     * Primary algorithm that determines the search results
+     *
+     * @param value the string to search for
+     * @return DisMaxQueryBuilder
+     */
     private QueryBuilder getQueryBuilder(String value) {
 
         value = value.toLowerCase();

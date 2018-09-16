@@ -29,6 +29,11 @@ public class ElasticsearchPostController {
         this.elasticsearchService = elasticsearchService;
     }
 
+    /**
+     * Returns a list of all posts
+     *
+     * @return list of posts
+     */
     @RequestMapping(value = "/")
     @ApiOperation(value = "Returns indexed posts")
     public Map<String, List<ElasticsearchPost>> findAll() {
@@ -41,6 +46,12 @@ public class ElasticsearchPostController {
         return elasticsearchPostMap;
     }
 
+    /**
+     * Performs search for post with unique id
+     *
+     * @param id the unique id of the post
+     * @return single post
+     */
     @RequestMapping(value = "/{id}")
     @ApiOperation(value = "Returns a post by id")
     public Map<String, Optional<ElasticsearchPost>> findById(@PathVariable("id") long id) {
@@ -55,9 +66,9 @@ public class ElasticsearchPostController {
     /**
      * Performs search within the field input with value input
      *
-     * @param field the document field to search
+     * @param field the field to search
      * @param value the string to search for
-     * @return
+     * @return list of posts
      */
     @RequestMapping(value = "/simple-search")
     @ApiOperation(value = "Performs search within the field input with value input")
@@ -72,13 +83,13 @@ public class ElasticsearchPostController {
     }
 
     /**
-     * Performs dismax search and returns List<ElasticsearchPost> containing the value
+     * Performs dismax search and returns a list of posts containing the value
      *
-     * @param value the string to search for
-     * @param start the starting index
-     * @param size  the number of results to return
+     * @param value    the string to search for
+     * @param start    the starting index
+     * @param size     the number of results to return
      * @param minScore the minimum score to return
-     * @return
+     * @return list of posts
      */
     @RequestMapping(value = "/dismax-search")
     @ApiOperation(value = "Performs dismax search and returns a list of posts containing the value input")
@@ -95,11 +106,11 @@ public class ElasticsearchPostController {
     }
 
     /**
-     * Performs dismax search and returns count of posts containing value
+     * Performs dismax search and returns a count of posts containing the value
      *
-     * @param value the string to search for
+     * @param value    the string to search for
      * @param minScore the minimum score to return
-     * @return
+     * @return count of posts
      * @throws ExecutionException
      * @throws InterruptedException
      */

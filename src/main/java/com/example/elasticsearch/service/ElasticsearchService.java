@@ -95,8 +95,9 @@ public class ElasticsearchService {
 
         return QueryBuilders.disMaxQuery()
                 .add(matchPhraseQuery("post_title", value).boost(3))
-                .add(matchPhraseQuery("terms.post_tag.name", value).boost(3))
-                .add(matchPhraseQuery("post_excerpt", value).boost(2))
+                .add(matchPhraseQuery("post_excerpt", value).boost(3))
+                .add(matchPhraseQuery("terms.post_tag.name", value).boost(2))
+                .add(matchPhraseQuery("terms.category.name", value).boost(2))
                 .add(matchPhraseQuery("post_content", value).boost(1));
     }
 

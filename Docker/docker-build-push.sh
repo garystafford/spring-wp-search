@@ -4,20 +4,23 @@
 # site: https://programmaticponderings.com
 # license: MIT License
 
-#set -ex
+IMAGE_REPOSITORY=garystafford
+IMAGE_NAME=wp-es-demo
+GCP_PROJECT=wp-search-bot
 
+
+# Build Spring Boot app
 ./gradlew clean build
 
-docker build -f Docker/Dockerfile --no-cache -t garystafford/wp-es-demo:latest .
+# Build Docker file
+docker build -f Docker/Dockerfile --no-cache -t ${IMAGE_REPOSITORY}/${IMAGE_NAME}:latest .
 
-# Docker Hub
-docker push garystafford/wp-es-demo:latest
+# Push image to Docker Hub
+docker push ${IMAGE_REPOSITORY}/${IMAGE_NAME}:latest
 
-# GCP Container Registry
-docker tag garystafford/wp-es-demo:latest gcr.io/wp-search-bot/wp-es-demo:latest
-docker push gcr.io/wp-search-bot/wp-es-demo:latest
+# Push image to GCP Container Registry
+docker tag ${IMAGE_REPOSITORY}/${IMAGE_NAME}:latest gcr.io/${GCP_PROJECT}/${IMAGE_NAME}:latest
+docker push gcr.io/${GCP_PROJECT}/${IMAGE_NAME}:latest
 
-kubectl replace --force -f gke/wp-es-demo.yaml
-
-# docker run --name wp-es-demo -p 8080:8080 -d garystafford/wp-es-demo:latest
-# docker logs $(docker ps | grep wp-es-demo | awk '{print $NF}') --follow
+# Re-deploy Workload (containerized app) to GKE
+kubectl replace --force -f gke/${IMAGE_NAME}.yaml

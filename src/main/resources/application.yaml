@@ -35,4 +35,3 @@ logging:
     root: INFO
 wordpress:
   url: https://programmaticponderings.com/?rest_route=/wp/v2/posts
-  per-page: 10

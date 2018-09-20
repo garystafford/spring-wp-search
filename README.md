@@ -1,19 +1,15 @@
-# Spring-Wordpress-Elasticseach Example
+# Programmatic Ponderings Search Action for Google Assistant
 
-## References
+This project was created for the post, [Integrating Search Capabilities with Actions for Google Assistant, using GKE and Elasticsearch](https://programmaticponderings.com/). This two-part post explores the enhancement of voice and text-based conversational interfaces by integrating a search and analytics engine. By interfacing an Action for Google Assistant conversational interface with Elasticsearch, we will improve the Action’s ability to provide relevant results to the end-user.
 
-```bash
-java -jar -Dspring.profiles.active=gcp search-1.0.1.jar
-docker stack deploy -c stack.yml search
-docker logs search_elastic_1 --follow
-DELETE localhost8681-1/post/2
+This repository contains the Spring Boot Service, detailed in the post, which integrates the Action for Google Assistant's serverless [Cloud Function](https://github.com/garystafford/google-wp-search-action) with Elasticsearch, by exposing a RESTful API.
 
-```
-- <https://docs.spring.io/spring-data/elasticsearch/docs/current/reference/html/#repositories>
-- <https://www.baeldung.com/spring-data-elasticsearch-queries>
-- <https://www.baeldung.com/spring-rest-template-list>
-- <https://www.baeldung.com/jackson-nested-values>
-- <https://www.baeldung.com/elasticsearch-java>
-- <https://cloud.google.com/appengine/docs/flexible/java/using-gradle#creating_a_new_project>
-- <https://springframework.guru/spring-boot-restful-api-documentation-with-swagger-2>
-- <https://cloud.google.com/container-registry/docs/pushing-and-pulling>
+## Google Assistant Preview
+
+Here is a brief [YouTube video preview](https://www.youtube.com/watch?v=k7TIv2NAIrc) of the final Action for Google Assistant, we will explore in this post, running on an Apple iPhone 8.
+
+## Architecture
+
+The final architecture of the Action for Google Assistant will look as follows.
+
+![Google-Assistant-Architecture-Final](./search-architecture.png)

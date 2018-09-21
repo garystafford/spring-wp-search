@@ -1,19 +1,33 @@
 # Firewall for ELK
-SOURCE_IP=<your_ip_address>
+SOURCE_IP=<wordpress_ip_address>
+PORT=9200
 
 gcloud compute \
   --project=wp-search-bot \
-  firewall-rules create elk-1-tcp-9200 \
-  --description=elk-1-tcp-9200 \
+  firewall-rules create elk-1-tcp-${PORT} \
+  --description=elk-1-tcp-${PORT} \
   --direction=INGRESS \
   --priority=1000 \
   --network=default \
   --action=ALLOW \
-  --rules=tcp:9200 \
+  --rules=tcp:${PORT} \
   --source-ranges=${SOURCE_IP} \
-  --target-tags=elk-1-tcp-9200
+  --target-tags=elk-1-tcp-${PORT}
 
-gcloud compute --project=wp-search-bot firewall-rules create elk-1-tcp-9300 --description=elk-1-tcp-9300 --direction=INGRESS --priority=1000 --network=default --action=ALLOW --rules=tcp:9300 --source-ranges=0.0.0.0/0 --target-tags=elk-1-tcp-9300
+SOURCE_IP=<gke_cluster_public_ip_address>
+PORT=9300
+
+gcloud compute \
+  --project=wp-search-bot \
+  firewall-rules create elk-1-tcp-${PORT} \
+  --description=elk-1-tcp-${PORT} \
+  --direction=INGRESS \
+  --priority=1000 \
+  --network=default \
+  --action=ALLOW \
+  --rules=tcp:${PORT} \
+  --source-ranges=${SOURCE_IP} \
+  --target-tags=elk-1-tcp-${PORT}
 
 # GKE Cluster
 GCP_PROJECT="wp-search-bot"
@@ -40,22 +54,23 @@ gcloud beta container \
   --addons HorizontalPodAutoscaling,HttpLoadBalancing \
   --no-enable-autoupgrade --enable-autorepair
 
-sh ./Docker/docker-build-push.sh
+# Cloud DNS
+gcloud dns --project=wp-search-bot managed-zones create chatbotzlabs \
+  --description=chatbotzlabs.com --dns-name=chatbotzlabs.com.
+
+ELK_IP=<elk_ip_address>
+gcloud dns --project=wp-search-bot record-sets transaction start --zone=chatbotzlabs
+gcloud dns --project=wp-search-bot record-sets transaction add ${ELK_IP} \
+  --name=search.chatbotzlabs.com. --ttl=300 --type=A --zone=chatbotzlabs
+gcloud dns --project=wp-search-bot record-sets transaction execute --zone=chatbotzlabs
+
+GKE_IP=<gke_ip_address>
+gcloud dns --project=wp-search-bot record-sets transaction start --zone=chatbotzlabs
+gcloud dns --project=wp-search-bot record-sets transaction add ${GKE_IP} \
+  --name=api.chatbotzlabs.com. --ttl=300 --type=A --zone=chatbotzlabs
+gcloud dns --project=wp-search-bot record-sets transaction execute --zone=chatbotzlabs
+
+# Deploy Spring Boot Service Pods
 kubectl apply -f gke/wp-es-demo.yaml
 kubectl replace --force -f gke/wp-es-demo.yaml
 kubectl apply -f gke/wp-es-demo-service.yaml
-
-gcloud dns --project=wp-search-bot managed-zones create chatbotzlabs --description=chatbotzlabs.com --dns-name=chatbotzlabs.com.
-
-gcloud dns --project=wp-search-bot record-sets transaction start --zone=chatbotzlabs
-gcloud dns --project=wp-search-bot record-sets transaction add 35.237.246.27 --name=search.chatbotzlabs.com. --ttl=300 --type=A --zone=chatbotzlabs
-gcloud dns --project=wp-search-bot record-sets transaction execute --zone=chatbotzlabs
-
-gcloud dns --project=wp-search-bot record-sets transaction start --zone=chatbotzlabs
-gcloud dns --project=wp-search-bot record-sets transaction add 35.196.209.4 --name=api.chatbotzlabs.com. --ttl=300 --type=A --zone=chatbotzlabs
-gcloud dns --project=wp-search-bot record-sets transaction execute --zone=chatbotzlabs
-
-gcloud auth configure-docker
-docker tag garystafford/wp-es-demo:latest gcr.io/wp-search-bot/wp-es-demo:latest
-docker push gcr.io/wp-search-bot/wp-es-demo:latest
-gcloud container images list

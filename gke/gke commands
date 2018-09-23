@@ -74,3 +74,6 @@ gcloud dns --project=wp-search-bot record-sets transaction execute --zone=chatbo
 kubectl apply -f gke/wp-es-demo.yaml
 kubectl replace --force -f gke/wp-es-demo.yaml
 kubectl apply -f gke/wp-es-demo-service.yaml
+
+istioctl kube-inject -f gke/wp-es-demo.yaml | kubectl apply -f -
+kubectl create -f <(istioctl kube-inject -f gke/wp-es-demo.yaml)

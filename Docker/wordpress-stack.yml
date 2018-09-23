@@ -1,3 +1,5 @@
+# Deploys Wordpress/Elasticsearch Stack
+
 version: '3.3'
 
 services:

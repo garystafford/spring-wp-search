@@ -1,0 +1,146 @@
+GET _search
+{
+  "query": {
+    "match_all": {}
+  }
+}
+
+DELETE localhost8681-1/post/2
+
+DELETE _all
+
+DELETE /localhost8681-1
+
+# https://www.elastic.co/guide/en/elasticsearch/reference/2.4/analysis-stop-tokenfilter.html
+# https://www.elastic.co/guide/en/elasticsearch/guide/current/using-synonyms.html
+
+POST /localhost8681-1/_close
+
+PUT /localhost8681-1/_settings
+{
+  "settings": {
+    "analysis": {
+      "filter": {
+        "wp_stop": {
+            "type":       "stop",
+            "stopwords":  "_english_"
+        },
+        "wp_synonym_filter": {
+          "type": "synonym",
+          "synonyms": [
+            "aks,azure kubernetes service",
+            "aws,amazon web services",
+            "azure,microsoft cloud",
+            "c#,csharp,c-sharp",
+            "chatbots,bots,conversational interface",
+            "eks,elastic container service for kubernetes",
+            "gce,google compute engine",
+            "gcp,google cloud,google cloud platform",
+            "gke,google kubernetes engine",
+            "iaas,infrastructure-as-a-service,infrastructure as a service",
+            "istio,service mesh",
+            "mongo,mongodb,mongo db,nosql,document database",
+            "mssql,sql server", "ms sql",
+            "paas,platform-as-a-service,software as a service",
+            "pcf,pivotal cloud foundry",
+            "saas,software-as-a-service,software as a service",
+            "vb,visual basic"
+          ]
+        }
+      },
+      "analyzer": {
+        "wp_synonyms": {
+          "tokenizer": "standard",
+          "filter": [
+            "lowercase",
+            "wp_synonym_filter",
+            "wp_stop"
+          ]
+        }
+      }
+    }
+  }
+}
+
+POST /localhost8681-1/_open
+
+GET /localhost8681-1/_validate/query?explain
+{
+  "query": {
+    "match_phrase": {
+      "post_content": {
+        "query": "Tell me about the Google Cloud Platform"
+      }
+    }
+  }
+}
+
+GET /localhost8681-1/_analyze
+{
+  "analyzer": "wp_synonyms",
+  "text": "What is a Service Mesh?"
+}
+
+GET /localhost8681-1/_validate/query?explain
+{
+  "query": {
+    "match": {
+      "post_content": {
+        "query": "service mesh",
+        "analyzer": "wp_synonyms"
+      }
+    }
+  }
+}
+
+GET /_search
+{
+  "_source": [
+    "post_title"
+  ],
+  "query": {
+    "match": {
+      "post_content": {
+        "query": "service mesh",
+        "analyzer": "wp_synonyms"
+      }
+    }
+  }
+}
+
+GET /localhost8681-1/_validate/query?explain
+{
+  "query": {
+    "multi_match": {
+      "query": "service mesh",
+      "fields": [
+        "post_excerpt",
+        "post_title",
+        "post_content",
+        "terms.post_tag.name",
+        "terms.category.name"
+      ],
+      "analyzer": "wp_synonyms"
+    }
+  }
+}
+
+GET /localhost8681-1/_search
+{
+  "_source": [
+    "post_title"
+  ],
+  "query": {
+    "multi_match": {
+      "query": "service mesh",
+      "fields": [
+        "post_excerpt",
+        "post_title",
+        "post_content",
+        "terms.post_tag.name",
+        "terms.category.name"
+      ],
+      "analyzer": "wp_synonyms"
+    }
+  }
+}

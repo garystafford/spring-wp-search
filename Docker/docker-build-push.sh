@@ -3,6 +3,7 @@
 # author: Gary A. Stafford
 # site: https://programmaticponderings.com
 # license: MIT License
+# purpose: Build and publish Docker Image to GCR
 
 IMAGE_REPOSITORY=garystafford
 IMAGE_NAME=wp-es-demo
